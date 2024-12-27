@@ -7,7 +7,7 @@ pub fn run(full: bool) {
     part2(&lines);
 }
 
-fn part1(lines: &Vec<&str>) {
+fn part1(lines: &[&str]) {
     let mut count = 0;
     let directions: Vec<(isize, isize)> = vec![
         (-1, -1),
@@ -70,7 +70,7 @@ fn part1(lines: &Vec<&str>) {
     info!("part 1: {}", count)
 }
 
-fn part2(lines: &Vec<&str>) {
+fn part2(lines: &[&str]) {
     let mut count = 0;
     let ms = b'M' + b'S';
 

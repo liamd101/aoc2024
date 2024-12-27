@@ -7,8 +7,9 @@ pub fn run(full: bool) {
     part2(&lines);
 }
 
-fn part1(lines: &Vec<&str>) {
+fn part1(lines: &[&str]) {
     let safe_lines: isize = lines
+        .to_owned()
         .clone()
         .iter_mut()
         .map(|line| {
@@ -47,8 +48,9 @@ fn is_safe(line: &[isize]) -> bool {
     !(increasing & decreasing)
 }
 
-fn part2(lines: &Vec<&str>) {
+fn part2(lines: &[&str]) {
     let safe_lines: isize = lines
+        .to_owned()
         .clone()
         .iter_mut()
         .map(|line| {

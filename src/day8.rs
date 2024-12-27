@@ -10,7 +10,7 @@ pub fn run(full: bool) {
     part2(&lines);
 }
 
-fn part1(lines: &Vec<&str>) {
+fn part1(lines: &[&str]) {
     let mut antinodes: HashSet<(isize, isize)> = HashSet::new();
     let mut antennas: HashMap<char, Vec<(isize, isize)>> = HashMap::new();
 
@@ -58,7 +58,7 @@ fn part1(lines: &Vec<&str>) {
     info!("part 1: {}", antinodes.len());
 }
 
-fn part2(lines: &Vec<&str>) {
+fn part2(lines: &[&str]) {
     let mut antinodes: HashSet<(isize, isize)> = HashSet::new();
     let mut antennas: HashMap<char, Vec<(isize, isize)>> = HashMap::new();
 

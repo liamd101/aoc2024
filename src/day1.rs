@@ -9,7 +9,7 @@ pub fn run(full: bool) {
     part2(&lines);
 }
 
-fn part1(lines: &Vec<&str>) {
+fn part1(lines: &[&str]) {
     let mut left_list = Vec::<usize>::new();
     let mut right_list = Vec::<usize>::new();
 
@@ -29,7 +29,7 @@ fn part1(lines: &Vec<&str>) {
     info!("part 1: {}", distance);
 }
 
-fn part2(lines: &Vec<&str>) {
+fn part2(lines: &[&str]) {
     let mut left_list = Vec::<usize>::new();
     let mut right_side = HashMap::<usize, usize>::new();
 

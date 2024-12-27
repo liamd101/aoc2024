@@ -53,7 +53,7 @@ impl Direction {
     }
 }
 
-fn part1(lines: &Vec<&str>, placed_obstacle: (isize, isize)) -> bool {
+fn part1(lines: &[&str], placed_obstacle: (isize, isize)) -> bool {
     let mut visited: HashSet<(isize, isize)> = HashSet::new();
     let mut agent_location: Option<(isize, isize)> = None;
     let mut agent_direction: Direction = Direction::Up;
@@ -111,7 +111,7 @@ fn part1(lines: &Vec<&str>, placed_obstacle: (isize, isize)) -> bool {
     false
 }
 
-fn part2(lines: &Vec<&str>) {
+fn part2(lines: &[&str]) {
     let all_positions: Vec<(isize, isize)> = (0..=lines[0].len())
         .flat_map(|x| (0..=lines.len()).map(move |y| (x as isize, y as isize)))
         .collect();
