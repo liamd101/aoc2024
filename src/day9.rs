@@ -76,10 +76,7 @@ fn parse_into_filesystem(nums: &[isize]) -> String {
             if x == -1 {
                 '.'
             } else {
-                match char::from_digit(x as u32, 10) {
-                    Some(c) => c,
-                    None => ' ',
-                }
+                char::from_digit(x as u32, 10).unwrap_or(' ')
             }
         })
         .collect()
