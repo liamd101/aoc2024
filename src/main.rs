@@ -10,12 +10,15 @@ struct Cli {
     #[arg(long)]
     day: u8,
 
-    #[arg(long)]
+    /// Whether to show trace logs
+    #[arg(long, short)]
     trace: bool,
 
+    /// Whether to show debug logs
     #[arg(long, short)]
     debug: bool,
 
+    /// Whether to run the full file or just the example
     #[arg(long, short, default_value = "false")]
     full: bool,
 }
@@ -44,15 +47,15 @@ fn main() {
     info!("Starting the application");
 
     match args.day {
-        1 => day1::run(args.full),
-        2 => day2::run(args.full),
-        3 => day3::run(args.full),
-        4 => day4::run(args.full),
-        5 => day5::run(args.full),
-        6 => day6::run(args.full),
-        7 => day7::run(args.full),
-        8 => day8::run(args.full),
-        9 => day9::run(args.full),
+        1 => day1::run(!args.full),
+        2 => day2::run(!args.full),
+        3 => day3::run(!args.full),
+        4 => day4::run(!args.full),
+        5 => day5::run(!args.full),
+        6 => day6::run(!args.full),
+        7 => day7::run(!args.full),
+        8 => day8::run(!args.full),
+        9 => day9::run(!args.full),
         _ => println!("Day not implemented."),
     }
 }

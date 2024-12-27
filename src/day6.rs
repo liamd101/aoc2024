@@ -7,7 +7,7 @@ use tracing::{debug, info};
 pub fn run(full: bool) {
     let file = crate::utils::get_input(6, full);
     let lines: Vec<&str> = file.lines().collect();
-    part1(&lines, (-1, -1));
+    info!("part 1: {}", part1(&lines, (-1, -1)).0.len());
     part2(&lines);
 }
 
@@ -53,7 +53,7 @@ impl Direction {
     }
 }
 
-fn part1(lines: &[&str], placed_obstacle: (isize, isize)) -> bool {
+fn part1(lines: &[&str], placed_obstacle: (isize, isize)) -> (HashSet<(isize, isize)>, bool) {
     let mut visited: HashSet<(isize, isize)> = HashSet::new();
     let mut agent_location: Option<(isize, isize)> = None;
     let mut agent_direction: Direction = Direction::Up;
@@ -76,7 +76,7 @@ fn part1(lines: &[&str], placed_obstacle: (isize, isize)) -> bool {
 
     while let Some((x, y)) = agent_location {
         if len_path + 1 > size * 2 {
-            return true;
+            return (visited, true);
         }
 
         let new_location = agent_direction.move_direction((x, y));
@@ -84,7 +84,7 @@ fn part1(lines: &[&str], placed_obstacle: (isize, isize)) -> bool {
         // if we have bumbed into the obstacle and we are moving in the same direction as any hit,
         // return true (this must be a cycle)
         if (new_location == placed_obstacle) & (hit_direction.contains(&agent_direction)) {
-            return true;
+            return (visited, true);
         } else if new_location == placed_obstacle {
             // add the direction we hit the obstacle from
             hit_direction.push(agent_direction);
@@ -106,9 +106,7 @@ fn part1(lines: &[&str], placed_obstacle: (isize, isize)) -> bool {
         len_path += 1;
     }
 
-    info!("part 1: {}", visited.len());
-
-    false
+    (visited, false)
 }
 
 fn part2(lines: &[&str]) {
@@ -118,8 +116,8 @@ fn part2(lines: &[&str]) {
 
     let placed_obstacles = all_positions
         .into_iter()
-        .filter(|&(x, y)| part1(lines, (x, y)))
-        .collect::<HashSet<(isize, isize)>>();
+        .filter(|&(x, y)| part1(lines, (x, y)).1)
+        .collect::<Vec<(isize, isize)>>();
 
     debug!("{:?}", placed_obstacles);
 
