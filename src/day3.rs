@@ -22,10 +22,7 @@ fn part1(lines: &Vec<&str>) {
         }
         results.push(result);
     }
-    info!(
-        "part 1: {:?}",
-        results.iter().sum::<isize>()
-    )
+    info!("part 1: {:?}", results.iter().sum::<isize>())
 }
 
 fn part2(lines: &Vec<&str>) {
@@ -53,8 +50,5 @@ fn part2(lines: &Vec<&str>) {
         }
         results.push(result);
     }
-    info!(
-        "part 2: {:?}",
-        results.iter().sum::<isize>()
-    )
+    info!("part 2: {:?}", results.iter().sum::<isize>())
 }
