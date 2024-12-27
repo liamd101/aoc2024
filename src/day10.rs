@@ -47,7 +47,13 @@ fn part2(lines: &[&str]) {
 /// runs DFS on the lines from a starting position
 /// This will check all adjacent points to see if they are increasing by +1, and if so it will
 /// recursively call DFS on that position.
-/// Returns a HashSet of all indices of a 9 that are reachable from the starting position
+/// Returns a Collection of all indices of a 9 that are reachable from the starting position
+///
+/// Takes a generic type that implements Debug, Default, Extend, and IntoIterator
+/// This means that we can pass in a Vec or a HashSet, depending on whether we want to find
+/// locations that can be reached or the number of possible ways we can reach those locations.
+///
+/// This makes part1 and part2 basically the exact same up to which collection type we use
 fn run_dfs<C>(lines: &[&str], position: (isize, isize)) -> C
 where
     C: Default + std::fmt::Debug + Extend<(isize, isize)> + IntoIterator<Item = (isize, isize)>,
@@ -67,7 +73,6 @@ where
         let neighbor_height = (get_char_at_index(lines, (nx, ny)).unwrap_or('0') as u8) - b'0';
 
         if neighbor_height == height + 1 {
-            // Recursively collect from the neighbor, then extend `container`
             container.extend(run_dfs::<C>(lines, (nx, ny)));
         }
     }
