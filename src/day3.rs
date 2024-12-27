@@ -1,5 +1,4 @@
 use regex::Regex;
-use std::fs;
 use tracing::{debug, info};
 
 pub fn run(full: bool) {
@@ -25,7 +24,7 @@ fn part1(lines: &Vec<&str>) {
     }
     info!(
         "part 1: {:?}",
-        results.iter().fold(0, |acc, &x| acc + x)
+        results.iter().sum::<isize>()
     )
 }
 
@@ -56,6 +55,6 @@ fn part2(lines: &Vec<&str>) {
     }
     info!(
         "part 2: {:?}",
-        results.iter().fold(0, |acc, &x| acc + x)
+        results.iter().sum::<isize>()
     )
 }

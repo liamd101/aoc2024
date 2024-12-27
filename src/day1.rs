@@ -1,4 +1,4 @@
-use std::{collections::HashMap, fs};
+use std::collections::HashMap;
 
 use tracing::info;
 
@@ -45,7 +45,7 @@ fn part2(lines: &Vec<&str>) {
     }
     let mut similarity_score = 0;
     for value in left_list.iter() {
-        similarity_score += right_side.get(&value).unwrap_or(&0) * value;
+        similarity_score += right_side.get(value).unwrap_or(&0) * value;
     }
     info!("part 2: {}", similarity_score);
 }

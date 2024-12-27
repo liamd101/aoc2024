@@ -1,6 +1,5 @@
 use crate::day4::get_char_at_index;
 use std::collections::{HashMap, HashSet};
-use std::fs;
 
 use tracing::{debug, info};
 

@@ -1,5 +1,4 @@
 use std::collections::HashSet;
-use std::fs;
 use std::result::Result;
 
 use crate::day4::get_char_at_index;

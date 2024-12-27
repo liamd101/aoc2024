@@ -1,4 +1,3 @@
-use std::fs;
 use tracing::{debug, info};
 
 pub fn run(full: bool) {

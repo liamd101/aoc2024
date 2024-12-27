@@ -1,4 +1,3 @@
-use std::fs;
 use tracing::{debug, info};
 
 pub fn run(full: bool) {
@@ -8,7 +7,7 @@ pub fn run(full: bool) {
 }
 
 fn part1(lines: &[&str]) {
-    let mut count = 0;
+    let count = 0;
 
     for &line in lines.iter() {
         let (answer, items) = line.split_once(": ").unwrap();
