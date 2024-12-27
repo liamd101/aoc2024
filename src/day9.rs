@@ -39,6 +39,35 @@ impl TripleId {
     pub fn range(&self) -> Range<usize> {
         self.start()..self.end()
     }
+
+    pub fn as_vec(&self) -> Vec<isize> {
+        self.range().map(|_| self.id()).collect()
+    }
+
+    // need a function to "put" one triple into another
+    // this should only be allowed if the size of the triple being put into is larger than the one
+    // being put in
+    // this should also only be allowed if the triple being put in is not already occupied (id !=
+    // -1)
+    // it should place the triple in the leftmost position
+    pub fn put(&self, other: TripleId) -> std::io::Result<(Option<TripleId>, TripleId)> {
+        if self.length() < other.length() || self.id() != -1 || self.start() > other.start() {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "invalid input",
+            ));
+        }
+        let new_start = self.start() + other.length();
+        let new_length = self.length() - other.length();
+        let condensed_triple = if new_length == 0 {
+            None
+        } else {
+            Some(TripleId::new(self.id(), new_start, new_length))
+        };
+        let moved_triple = TripleId::new(other.id(), self.start(), other.length());
+
+        Ok((condensed_triple, moved_triple))
+    }
 }
 
 fn parse_into_filesystem(nums: &[isize]) -> String {
@@ -47,7 +76,10 @@ fn parse_into_filesystem(nums: &[isize]) -> String {
             if x == -1 {
                 '.'
             } else {
-                char::from_digit(x as u32, 10).unwrap()
+                match char::from_digit(x as u32, 10) {
+                    Some(c) => c,
+                    None => ' ',
+                }
             }
         })
         .collect()
@@ -134,40 +166,68 @@ fn part2(line: &str) {
     }
     debug!("{:?}", filesystem);
 
-    let open_space = filesystem
+    #[allow(unused_mut)]
+    let mut open_space = filesystem
         .clone()
         .into_iter()
         .filter(|&triple| triple.id() == -1)
         .collect::<VecDeque<TripleId>>();
     debug!("{:?}", open_space);
 
+    let mut new_filesystem: Vec<TripleId> = vec![];
+
     for triple in filesystem.clone().iter().rev() {
-        let swap_space = open_space.iter().find(|x| {
-            for index in triple.range() {
-                if !x.contains(index) {
-                    return false;
-                }
-            }
-            x.start() < triple.start()
+        // iterate through all triples in reverse
+        // find the leftmost open space that can be swapped with the current triple
+        // if there is no open space that can fit the current triple, continue
+        // if there is an open space that can fit the current triple, put the current triple in the
+        // open space and continue
+
+        if triple.id() == -1 {
+            continue;
+        }
+
+        let swap_space = open_space.iter().enumerate().find(|&(_, space)| {
+            space.length() >= triple.length() && triple.start() > space.start()
         });
+
         match swap_space {
-            Some(swappable) => {
-                debug!("swappable: {:?}", swappable);
+            Some((idx, space)) => {
+                let (condensed, moved) = space.put(*triple).unwrap();
+                if let Some(condensed) = condensed {
+                    open_space[idx] = condensed;
+                } else {
+                    // delete the open space if it is fully occupied
+                    open_space.remove(idx);
+                }
+                new_filesystem.push(moved);
             }
-            None => continue,
+            None => new_filesystem.push(*triple),
         }
     }
 
-    let checksum = filesystem
+    new_filesystem.append(&mut open_space.into_iter().collect::<Vec<TripleId>>());
+    new_filesystem.sort_by_key(|x| x.start());
+    debug!("{:?}", new_filesystem);
+    let parsed = parse_into_filesystem(
+        &new_filesystem
+            .iter()
+            .flat_map(|x| x.as_vec())
+            .collect::<Vec<isize>>(),
+    );
+    debug!("{:?}", parsed);
+
+    let checksum = new_filesystem
         .iter()
         .enumerate()
         .filter(|(_, &c)| c.id() != -1)
         .fold(0, |acc, (_, &c)| {
-            let mut sum = acc;
+            let mut sum = 0;
             for idx in c.range() {
                 sum += idx * c.id() as usize;
             }
-            sum
+            debug!("{:?} -> {}", c, sum);
+            sum + acc
         });
     info!("part 2: {}", checksum);
 }
