@@ -39,8 +39,8 @@ fn part1(line: &str) {
 }
 
 /// takes the following:
-///   - map of stone -> what it produces
 ///   - map of stone -> number of those stones
+///   - map of stone -> what it produces
 ///
 /// returns the following:
 ///   - updated map of stone -> what it produces (if it was not in the input)
