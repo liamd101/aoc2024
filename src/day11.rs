@@ -6,7 +6,6 @@ pub fn run(full: bool) {
     let file = crate::utils::get_input(11, full);
     let lines: Vec<&str> = file.lines().collect();
     part1(lines[0]);
-    part2(lines[0]);
 }
 
 fn part1(line: &str) {
@@ -29,6 +28,14 @@ fn part1(line: &str) {
     let count = stones.iter().fold(0, |acc, (_, v)| acc + v);
 
     info!("part 1: {}", count);
+
+    for _ in 25..75 {
+        stones = blink_optimized(stones, &mut stone_mapping);
+    }
+
+    let count = stones.iter().fold(0, |acc, (_, v)| acc + v);
+
+    info!("part 2: {}", count);
 }
 
 /// takes the following:
@@ -90,26 +97,4 @@ fn split_stone(stone: isize) -> Option<(isize, isize)> {
     } else {
         None
     }
-}
-
-fn part2(line: &str) {
-    let mut stones = line
-        .split_whitespace()
-        .map(|x| x.parse::<isize>().unwrap())
-        .map(|x| (x, 1))
-        .collect::<HashMap<isize, isize>>();
-
-    let mut stone_mapping: HashMap<isize, (isize, isize)> = HashMap::new();
-
-    debug!("{:?}", stones);
-
-    for _ in 0..75 {
-        stones = blink_optimized(stones, &mut stone_mapping);
-        debug!("stones: {:?}", stones);
-        debug!("stone mapping: {:?}", stone_mapping);
-    }
-
-    let count = stones.iter().fold(0, |acc, (_, v)| acc + v);
-
-    info!("part 1: {}", count);
 }
