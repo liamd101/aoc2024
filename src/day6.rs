@@ -12,14 +12,14 @@ pub fn run(full: bool) {
 }
 
 #[derive(Debug, Eq, PartialEq, Hash, Clone, Copy)]
-enum Direction {
+pub enum Direction {
     Up,
     Down,
     Left,
     Right,
 }
 impl Direction {
-    fn vector(&self) -> (isize, isize) {
+    pub fn vector(&self) -> (isize, isize) {
         match self {
             Direction::Up => (0, -1),
             Direction::Down => (0, 1),
@@ -28,12 +28,21 @@ impl Direction {
         }
     }
 
-    fn rotate(&self) -> Direction {
+    pub fn rotate(&self) -> Direction {
         match self {
             Direction::Up => Direction::Right,
             Direction::Right => Direction::Down,
             Direction::Down => Direction::Left,
             Direction::Left => Direction::Up,
+        }
+    }
+
+    pub fn rotate_counter_clockwise(&self) -> Direction {
+        match self {
+            Direction::Up => Direction::Left,
+            Direction::Right => Direction::Up,
+            Direction::Down => Direction::Right,
+            Direction::Left => Direction::Down,
         }
     }
 
@@ -47,7 +56,17 @@ impl Direction {
         }
     }
 
-    fn move_direction(&self, (x, y): (isize, isize)) -> (isize, isize) {
+    pub fn from_tuple(direction: (isize, isize)) -> Result<Direction, &'static str> {
+        match direction {
+            (0, -1) => Ok(Direction::Up),
+            (0, 1) => Ok(Direction::Down),
+            (1, 0) => Ok(Direction::Right),
+            (-1, 0) => Ok(Direction::Left),
+            _ => Err("invalid tuple"),
+        }
+    }
+
+    pub fn move_direction(&self, (x, y): (isize, isize)) -> (isize, isize) {
         let (dx, dy) = self.vector();
         (x + dx, y + dy)
     }

@@ -59,6 +59,7 @@ fn main() {
         10 => day10::run(!args.full),
         11 => day11::run(!args.full),
         12 => day12::run(!args.full),
+        13 => day13::run(!args.full),
         _ => println!("Day not implemented."),
     }
 }
